@@ -178,7 +178,8 @@ find_library(CRYPTO_LIBRARY crypto)
 
 include(${CCF_DIR}/cmake/crypto.cmake)
 include(${CCF_DIR}/cmake/secp256k1.cmake)
-include(${CCF_DIR}/cmake/quickjs.cmake)
+# trustgrid patch CU-48zeu3 remove JS Support - LLVM8 missing type ptrdiff_t
+# include(${CCF_DIR}/cmake/quickjs.cmake)
 include(${CCF_DIR}/cmake/sss.cmake)
 
 list(APPEND LINK_LIBCXX -lc++ -lc++abi -lc++fs -stdlib=libc++)
@@ -347,17 +348,18 @@ sign_app_library(
   ${CCF_DIR}/src/apps/sample_key.pem
 )
 
+# trustgrid patch CU-48zeu3 Remove JS Support LLVM8 missing ptrdiff_t  
 # SNIPPET_START: JS generic application
-add_ccf_app(
-  js_generic
-  SRCS ${CCF_DIR}/src/apps/js_generic/js_generic.cpp
-  LINK_LIBS_ENCLAVE quickjs.enclave -lgcc
-  LINK_LIBS_VIRTUAL quickjs.host INSTALL_LIBS ON
-)
-sign_app_library(
-  js_generic.enclave ${CCF_DIR}/src/apps/js_generic/oe_sign.conf
-  ${CCF_DIR}/src/apps/sample_key.pem INSTALL_LIBS ON
-)
+# add_ccf_app(
+#   js_generic
+#   SRCS ${CCF_DIR}/src/apps/js_generic/js_generic.cpp
+#   LINK_LIBS_ENCLAVE quickjs.enclave -lgcc
+#   LINK_LIBS_VIRTUAL quickjs.host INSTALL_LIBS ON
+# )
+# sign_app_library(
+#   js_generic.enclave ${CCF_DIR}/src/apps/js_generic/oe_sign.conf
+#   ${CCF_DIR}/src/apps/sample_key.pem INSTALL_LIBS ON
+# )
 # SNIPPET_END: JS generic application
 
 # Samples

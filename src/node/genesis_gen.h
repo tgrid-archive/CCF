@@ -341,6 +341,12 @@ namespace ccf
         return false;
       }
 
+      // trustgrid patch CU-48zeu3
+      if (active_service->status == ServiceStatus::OPEN)
+      {
+        // If the service is already open, return with no effect
+        return true;
+      }
       if (
         active_service->status != ServiceStatus::OPENING &&
         active_service->status != ServiceStatus::WAITING_FOR_RECOVERY_SHARES)

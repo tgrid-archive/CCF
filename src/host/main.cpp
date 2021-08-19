@@ -40,6 +40,13 @@ void print_version(size_t)
   std::cout << "CCF host: " << ccf::ccf_version << std::endl;
   exit(0);
 }
+//trustgrid patch CU-48zeu3
+void trustgrid() {
+
+   std::cout << "TrustGrid Fork" << std::endl;
+   std::cout << "CCF host: " << ccf::ccf_version << std::endl;
+
+}
 
 int main(int argc, char** argv)
 {
@@ -51,6 +58,8 @@ int main(int argc, char** argv)
 
   app.set_config("--config", "", "Read an INI or TOML file", false);
   app.allow_config_extras(false);
+
+  trustgrid();
 
   app.add_flag(
     "-v, --version", print_version, "Display CCF host version and exit");
