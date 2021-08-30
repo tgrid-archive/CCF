@@ -3,6 +3,7 @@
 
 unset(CCF_VERSION)
 unset(CCF_RELEASE_VERSION)
+unset(CCF_RELEASE_VERSION_RAW)
 
 # If possible, deduce project version from git environment
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)
@@ -12,20 +13,23 @@ if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)
     COMMAND ${GIT_EXECUTABLE} describe --tags
     OUTPUT_VARIABLE "CCF_VERSION"
     OUTPUT_STRIP_TRAILING_WHITESPACE
-    RESULT_VARIABLE RETURN_CODE
   )
-  if(NOT RETURN_CODE STREQUAL "0")
-    message(
-      FATAL_ERROR
-        "Git repository does not appear to contain any tag (the repository should be cloned with sufficient depth to access the latest \"ccf-*\" tag)"
-    )
-  endif()
   execute_process(
     COMMAND "bash" "-c"
-            "${GIT_EXECUTABLE} describe --tags --abbrev=0 | tr -d ccf-"
-    OUTPUT_VARIABLE "CCF_RELEASE_VERSION"
+            "${GIT_EXECUTABLE} describe --tags --abbrev=0"
+    OUTPUT_VARIABLE "CCF_RELEASE_VERSION_RAW"
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
+  #CCF_RELEASE_VERSION has to be the numeric cmake project version  [VERSION <major>[.<minor>[.<patch>[.<tweak>]]]]
+  string(REGEX MATCH "[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)*"
+  CCF_RELEASE_VERSION
+  "${CCF_RELEASE_VERSION_RAW}"
+  )
+  message(
+    STATUS
+      "Numeric Release Version for project: \"${CCF_RELEASE_VERSION}\""
+  )
+
 endif()
 
 if(NOT CCF_RELEASE_VERSION)

@@ -5,9 +5,9 @@
   shell:
     cmd: |
       if [ "{{ ccf_ver }}" = "latest" ]; then
-        curl -s https://api.github.com/repos/microsoft/ccf/releases/latest | egrep 'https://.*\.deb' | cut -d\" -f4
+        curl -s {{ ccf_releases_base_url }}/latest | egrep 'https://.*\.deb' | cut -d\" -f4
       else
-        echo "https://github.com/microsoft/CCF/releases/{{ ccf_suffix }}/ccf_{{ ccf_ver }}_amd64.deb"
+        echo "{{ ccf_releases_base_url }}/{{ ccf_suffix }}/ccf_{{ ccf_ver }}_amd64.deb"
       fi
   register: ccf_deb_url
 

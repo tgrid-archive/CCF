@@ -186,7 +186,8 @@ list(APPEND COMPILE_LIBCXX -stdlib=libc++)
 list(APPEND LINK_LIBCXX -lc++ -lc++abi -lc++fs -stdlib=libc++)
 
 include(${CCF_DIR}/cmake/crypto.cmake)
-include(${CCF_DIR}/cmake/quickjs.cmake)
+#remove js, ptrdiff_t not supported in llvm8
+#include(${CCF_DIR}/cmake/quickjs.cmake)
 include(${CCF_DIR}/cmake/sss.cmake)
 
 # Unit test wrapper
@@ -344,17 +345,18 @@ set(CCF_NETWORK_TEST_ARGS -l ${TEST_HOST_LOGGING_LEVEL} --worker-threads
                           ${WORKER_THREADS}
 )
 
+# remove js support ptrdiff_t used by quickjs not supported by llvm8
 # SNIPPET_START: JS generic application
-add_ccf_app(
-  js_generic
-  SRCS ${CCF_DIR}/src/apps/js_generic/js_generic.cpp
-  LINK_LIBS_ENCLAVE quickjs.enclave -lgcc
-  LINK_LIBS_VIRTUAL quickjs.host INSTALL_LIBS ON
-)
-sign_app_library(
-  js_generic.enclave ${CCF_DIR}/src/apps/js_generic/oe_sign.conf
-  ${CMAKE_CURRENT_BINARY_DIR}/signing_key.pem INSTALL_LIBS ON
-)
+# add_ccf_app(
+#   js_generic
+#   SRCS ${CCF_DIR}/src/apps/js_generic/js_generic.cpp
+#   LINK_LIBS_ENCLAVE quickjs.enclave -lgcc
+#   LINK_LIBS_VIRTUAL quickjs.host INSTALL_LIBS ON
+# )
+# sign_app_library(
+#   js_generic.enclave ${CCF_DIR}/src/apps/js_generic/oe_sign.conf
+#   ${CMAKE_CURRENT_BINARY_DIR}/signing_key.pem INSTALL_LIBS ON
+# )
 # SNIPPET_END: JS generic application
 
 install(DIRECTORY ${CCF_DIR}/samples/apps/logging/js
