@@ -1,5 +1,5 @@
 - name: Include vars
-  include_vars: common.yml
+  include_vars: trustgrid.yml
 
 - name: Get package url
   shell:
