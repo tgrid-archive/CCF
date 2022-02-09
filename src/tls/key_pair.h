@@ -617,7 +617,7 @@ namespace tls
       // https://support.apple.com/en-us/HT210176
       if (
         mbedtls_x509write_crt_set_validity(
-          &sign.crt, "20191101000000", "20211231235959") != 0)
+          &sign.crt, "20191101000000", "20311231235959") != 0)
         return {};
 
       if (
